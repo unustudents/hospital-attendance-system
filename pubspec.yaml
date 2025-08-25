@@ -1,0 +1,42 @@
+name: hospital_attendance_system
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+
+  # State management / utilities
+  flutter_bloc: ^8.1.2
+  get_it: ^8.1.1
+  bloc: ^8.1.0
+
+  # Freezed (runtime annotation)
+  freezed_annotation: ^2.2.0
+
+  # JSON support commonly used with freezed
+  json_annotation: ^4.8.0
+
+  # Injectable - runtime
+  injectable: ^2.1.0
+  forui: ^0.15.1
+  forui_assets: ^0.15.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  # Code generators / build
+  build_runner: ^2.4.6
+  freezed: ^2.2.0
+  injectable_generator: ^2.1.0
+  json_serializable: ^6.8.0
+
+flutter:
+  uses-material-design: true
