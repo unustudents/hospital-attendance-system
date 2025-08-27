@@ -2,7 +2,9 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import 'core/theme/app_theme.dart';
 import 'routes/app_router.dart';
 
 void main() {
@@ -20,7 +22,7 @@ class Application extends StatelessWidget {
     /// ```shell
     /// dart forui theme create [theme template].
     /// ```
-    final theme = FThemes.green.light;
+    final theme = AppTheme.lightTheme;
 
     return MaterialApp.router(
       supportedLocales: FLocalizations.supportedLocales,
@@ -31,7 +33,7 @@ class Application extends StatelessWidget {
         child = DevicePreview.appBuilder(context, child);
         return FTheme(data: theme, child: child);
       },
-      theme: theme.toApproximateMaterialTheme(),
+      theme: theme.toApproximateMaterialTheme().copyWith(textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
     );
   }
 }
