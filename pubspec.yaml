@@ -37,6 +37,9 @@ dependencies:
   
   # Fonts
   google_fonts: ^6.2.1
+  
+  # Camera & Image
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:

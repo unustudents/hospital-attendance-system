@@ -13,6 +13,14 @@ RouteBase get $homeRoute => GoRouteData.$route(
   name: 'home',
 
   factory: _$HomeRoute._fromState,
+  routes: [
+    GoRouteData.$route(
+      path: '/presence',
+      name: 'presence',
+
+      factory: _$PresenceRoute._fromState,
+    ),
+  ],
 );
 
 mixin _$HomeRoute on GoRouteData {
@@ -20,6 +28,26 @@ mixin _$HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$PresenceRoute on GoRouteData {
+  static PresenceRoute _fromState(GoRouterState state) => const PresenceRoute();
+
+  @override
+  String get location => GoRouteData.$location('/presence');
 
   @override
   void go(BuildContext context) => context.go(location);

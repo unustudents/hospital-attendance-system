@@ -1,11 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import '../feature/home/pages/home_screen.dart';
+import '../feature/presence/pages/presence_screen.dart';
 
 part 'app_router.g.dart';
 
-@TypedGoRoute<HomeRoute>(path: '/', name: 'home')
+/// Home route
+@TypedGoRoute<HomeRoute>(
+  path: '/',
+  name: 'home',
+  routes: [TypedGoRoute<PresenceRoute>(path: '/presence', name: 'presence')],
+)
 class HomeRoute extends GoRouteData with _$HomeRoute {
   const HomeRoute();
 
@@ -13,6 +19,13 @@ class HomeRoute extends GoRouteData with _$HomeRoute {
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
-class AppRouter {
-  static final GoRouter router = GoRouter(initialLocation: '/', routes: $appRoutes);
+/// Presence route
+class PresenceRoute extends GoRouteData with _$PresenceRoute {
+  const PresenceRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PresenceScreen();
 }
+
+GoRouter get appRouter => GoRouter(initialLocation: '/', routes: $appRoutes);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
+import '../../../routes/app_router.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -19,17 +21,26 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: colors.background),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: colors.background,
+              ),
               padding: const EdgeInsets.all(13),
               child: const Column(
                 children: [
                   Row(
                     children: [
                       Expanded(
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Selamat Siang"), Text("Mas Akmal")]),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text("Selamat Siang"), Text("Mas Akmal")],
+                        ),
                       ),
                       Expanded(
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text("Rabu"), Text("08:00 - 14:00")]),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text("Rabu"), Text("08:00 - 14:00")],
+                        ),
                       ),
                     ],
                   ),
@@ -37,11 +48,31 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      MenuWidget(icon: FIcons.camera, label: 'Presensi', color: Colors.pinkAccent),
-                      MenuWidget(icon: FIcons.fileBox, label: 'Izin', color: Colors.orangeAccent),
-                      MenuWidget(icon: FIcons.calendar, label: 'Cuti', color: Colors.green),
-                      MenuWidget(icon: FIcons.history, label: 'Riwayat', color: Colors.purple),
-                      MenuWidget(icon: FIcons.contact, label: 'Profil', color: Colors.deepOrangeAccent),
+                      MenuWidget(
+                        icon: FIcons.camera,
+                        label: 'Presensi',
+                        color: Colors.pinkAccent,
+                      ),
+                      MenuWidget(
+                        icon: FIcons.fileBox,
+                        label: 'Izin',
+                        color: Colors.orangeAccent,
+                      ),
+                      MenuWidget(
+                        icon: FIcons.calendar,
+                        label: 'Cuti',
+                        color: Colors.green,
+                      ),
+                      MenuWidget(
+                        icon: FIcons.history,
+                        label: 'Riwayat',
+                        color: Colors.purple,
+                      ),
+                      MenuWidget(
+                        icon: FIcons.contact,
+                        label: 'Profil',
+                        color: Colors.deepOrangeAccent,
+                      ),
                     ],
                   ),
                 ],
@@ -53,10 +84,18 @@ class HomeScreen extends StatelessWidget {
               spacing: 10,
               children: [
                 Expanded(
-                  child: BoxPresenceWidget(typography: typography, status: 'Masuk', color: colors.primary),
+                  child: BoxPresenceWidget(
+                    typography: typography,
+                    status: 'Masuk',
+                    color: colors.primary,
+                  ),
                 ),
                 Expanded(
-                  child: BoxPresenceWidget(typography: typography, status: 'Pulang', color: colors.secondary),
+                  child: BoxPresenceWidget(
+                    typography: typography,
+                    status: 'Pulang',
+                    color: colors.secondary,
+                  ),
                 ),
               ],
             ),
@@ -68,37 +107,52 @@ class HomeScreen extends StatelessWidget {
 }
 
 class MenuWidget extends StatelessWidget {
-  const MenuWidget({super.key, required this.icon, this.color, required this.label});
+  const MenuWidget({
+    super.key,
+    required this.icon,
+    this.color,
+    required this.label,
+  });
   final IconData icon;
   final Color? color;
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: 10,
-      children: [
-        Card.filled(
-          color: color ?? Colors.grey.shade200,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Icon(
-              icon,
-              color: color != null
-                  ? Colors
-                        .white // Gunakan warna kontras jika ada background color
-                  : Colors.grey.shade700, // Gunakan warna default jika tidak ada background color
+    return GestureDetector(
+      onTap: () => const PresenceRoute().push(context),
+      child: Column(
+        spacing: 10,
+        children: [
+          Card.filled(
+            color: color ?? Colors.grey.shade200,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Icon(
+                icon,
+                color: color != null
+                    ? Colors
+                          .white // Gunakan warna kontras jika ada background color
+                    : Colors
+                          .grey
+                          .shade700, // Gunakan warna default jika tidak ada background color
+              ),
             ),
           ),
-        ),
-        Text(label, style: context.theme.typography.xs),
-      ],
+          Text(label, style: context.theme.typography.xs),
+        ],
+      ),
     );
   }
 }
 
 class BoxPresenceWidget extends StatelessWidget {
-  const BoxPresenceWidget({super.key, required this.typography, required this.status, required this.color});
+  const BoxPresenceWidget({
+    super.key,
+    required this.typography,
+    required this.status,
+    required this.color,
+  });
 
   final FTypography typography;
   final String status;
@@ -107,14 +161,23 @@ class BoxPresenceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: color),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: color,
+      ),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 8,
         children: [
-          Text("Presensi $status", style: typography.sm.copyWith(fontWeight: FontWeight.w500)),
-          Text("Belum absen", style: typography.base.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            "Presensi $status",
+            style: typography.sm.copyWith(fontWeight: FontWeight.w500),
+          ),
+          Text(
+            "Belum absen",
+            style: typography.base.copyWith(fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
