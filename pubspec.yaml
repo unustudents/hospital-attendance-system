@@ -40,6 +40,7 @@ dependencies:
   
   # Camera & Image
   image_picker: ^1.0.7
+  flutter_gen: ^5.11.0
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,25 @@ dev_dependencies:
   injectable_generator: ^2.4.2
   json_serializable: ^6.8.0
   go_router_builder: ^3.0.0
+  flutter_gen_runner: ^5.11.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 100
+  integrations:
+    flutter_svg: true
+    rive: false
+  assets:
+    enabled: true
+    outputs:
+      class_name: Assets
+      package_parameter_enabled: false
+      # If you prefer camel-case for fields set below to true (default false)
+      # camel_case_fields: true
+    exclude:
+      - assets/sample/**
