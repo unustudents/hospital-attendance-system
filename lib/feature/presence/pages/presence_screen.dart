@@ -1,7 +1,6 @@
 import 'dart:io';
 
-// import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
@@ -12,21 +11,20 @@ class PresenceScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Hooks for state management
+    // State for captured image
     final imageFile = useState<File?>(null);
     final isLoading = useState<bool>(false);
-    final selectedType = useState<String?>(null);
 
     // Image picker instance
     final picker = useMemoized(() => ImagePicker(), []);
 
-    // Take picture function
-    final takePicture = useCallback(() async {
+    // Take selfie function
+    final takeSelfie = useCallback(() async {
       try {
         final XFile? image = await picker.pickImage(
           source: ImageSource.camera,
-          imageQuality: 70,
-          preferredCameraDevice: CameraDevice.front,
+          imageQuality: 80,
+          preferredCameraDevice: CameraDevice.front, // Front camera for selfie
         );
 
         if (image != null) {
@@ -34,223 +32,293 @@ class PresenceScreen extends HookWidget {
         }
       } catch (e) {
         if (context.mounted) {
-          // ScaffoldMessenger.of(
-          //   context,
-          // ).showSnackBar(SnackBar(content: Text('Error taking picture: $e')));
+          // Show error dialog using Forui
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return FDialog(
+                title: const Text('Error'),
+                body: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: context.theme.colors.destructive,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Error taking selfie: $e',
+                      style: context.theme.typography.sm,
+                    ),
+                  ],
+                ),
+                actions: [
+                  FButton(
+                    onPress: () => context.pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
         }
       }
     }, [picker]);
 
-    // Submit presence function
-    final submitPresence = useCallback(() async {
-      if (imageFile.value == null || selectedType.value == null) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text('Please take a photo and select presence type'),
-        //   ),
-        // );
-        return;
-      }
+    // Confirm selfie function
+    final confirmSelfie = useCallback(() async {
+      if (imageFile.value == null) return;
 
       isLoading.value = true;
+
+      // Show loading dialog using Forui
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return FDialog(
+              title: const Text('Confirming Selfie'),
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const FProgress(value: null), // Indeterminate progress
+                  const SizedBox(height: 16),
+                  Text(
+                    'Please wait while we verify your selfie...',
+                    style: context.theme.typography.sm,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              actions: const [], // Empty actions for loading dialog
+            );
+          },
+        );
+      }
 
       // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
 
       isLoading.value = false;
 
+      // Close loading dialog
       if (context.mounted) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(
-        //       '${selectedType.value} presence recorded successfully!',
-        //     ),
-        //     backgroundColor: Colors.green,
-        //   ),
-        // );
-
-        // Reset form
-        imageFile.value = null;
-        selectedType.value = null;
+        Navigator.of(context).pop();
       }
-    }, [imageFile.value, selectedType.value]);
 
-    final FColors colors = context.theme.colors;
+      if (context.mounted) {
+        // Show success dialog using Forui
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return FDialog(
+              title: const Text('Success!'),
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: context.theme.colors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Selfie confirmed successfully!',
+                    style: context.theme.typography.sm,
+                  ),
+                ],
+              ),
+              actions: [
+                FButton(
+                  onPress: () {
+                    context.pop(); // Close dialog
+                    context.pop(); // Navigate back
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }, [imageFile.value]);
+
+    // Retake selfie function
+    final retakeSelfie = useCallback(() async {
+      // Reset image first
+      imageFile.value = null;
+
+      // Call existing takeSelfie function
+      await takeSelfie();
+    }, [takeSelfie]);
 
     return FScaffold(
       header: FHeader.nested(
-        title: const Text('Attendance'),
-        prefixes: [FHeaderAction.back(onPress: () => context.pop())],
+        title: const Text('Ambil Gambar'),
+        prefixes: [
+          FHeaderAction.back(
+            onPress: () => context.pop(),
+            onHoverChange: (hovered) {},
+            onStateChange: (delta) {},
+          ),
+        ],
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header Card
-            FCard(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Icon(FIcons.timer, size: 48, color: colors.primary),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Mark Your Attendance',
-                      // style: Theme.of(context).textTheme.headlineSmall
-                      //     ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      DateTime.now().toString().substring(0, 19),
-                      // style: Theme.of(
-                      //   context,
-                      // ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
-                    ),
-                  ],
+            // Title
+            Text(
+              'Take a Selfie',
+              style: context.theme.typography.xl.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              'Please take a clear selfie for verification',
+              style: context.theme.typography.sm.copyWith(
+                color: context.theme.colors.mutedForeground,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 32),
+
+            // Camera/Photo Preview Area
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: context.theme.colors.border,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: context.theme.colors.background,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: imageFile.value != null
+                      ? Image.file(
+                          imageFile.value!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: context.theme.colors.muted,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FIcons.camera,
+                                size: 80,
+                                color: context.theme.colors.mutedForeground,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Tap the camera button to\ntake a selfie',
+                                style: context.theme.typography.sm.copyWith(
+                                  color: context.theme.colors.mutedForeground,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
                 ),
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
 
-            // Photo Section
-            Text(
-              'Take Your Photo',
-              // style: Theme.of(
-              //   context,
-              // ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            FCard(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    if (imageFile.value != null) ...[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          imageFile.value!,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ] else ...[
-                      Container(
-                        height: 200,
-                        decoration: BoxDecoration(
-                          // color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(12),
-                          // border: Border.all(color: Colors.grey[300]!),
-                        ),
-                        child: Column(
+            // Action Buttons
+            if (imageFile.value == null) ...[
+              // Take Selfie Button
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: FButton(
+                  onPress: takeSelfie,
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(FIcons.camera, size: 20),
+                      SizedBox(width: 8),
+                      Text('Take Selfie'),
+                    ],
+                  ),
+                ),
+              ),
+            ] else ...[
+              // Confirmation Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 56,
+                      child: FButton(
+                        onPress: retakeSelfie,
+                        style: FButtonStyle.outline(),
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              FIcons.camera,
-                              size: 48,
-                              color: colors.secondary,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'No photo taken',
-                              style: TextStyle(
-                                color: colors.secondary,
-                                fontSize: 16,
-                              ),
-                            ),
+                            Icon(FIcons.refreshCw, size: 20),
+                            SizedBox(width: 8),
+                            Text('Retake'),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                    ],
-
-                    SizedBox(
-                      width: double.infinity,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: SizedBox(
+                      height: 56,
                       child: FButton(
-                        onPress: takePicture,
-                        style: FButtonStyle.outline(),
-                        child: Text(
-                          imageFile.value != null
-                              ? 'Retake Photo'
-                              : 'Take Photo',
+                        onPress: isLoading.value ? null : confirmSelfie,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(FIcons.check, size: 20),
+                            SizedBox(width: 8),
+                            Text('Confirm'),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
+            ],
 
-            const SizedBox(height: 24),
-
-            // Presence Type Selection
-            Text(
-              'Presence Type',
-              // style: Theme.of(
-              //   context,
-              // ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            // FCard(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(16),
-            //     child: Column(
-            //       children: [
-            //         RadioListTile<String>(
-            //           title: const Text('Check In'),
-            //           subtitle: const Text('Mark your arrival'),
-            //           value: 'Check In',
-            //           groupValue: selectedType.value,
-            //           onChanged: (value) {
-            //             selectedType.value = value;
-            //           },
-            //         ),
-            //         RadioListTile<String>(
-            //           title: const Text('Check Out'),
-            //           subtitle: const Text('Mark your departure'),
-            //           value: 'Check Out',
-            //           groupValue: selectedType.value,
-            //           onChanged: (value) {
-            //             selectedType.value = value;
-            //           },
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            const SizedBox(height: 32),
-
-            // Submit Button
-            SizedBox(
-              height: 50,
-              child: FButton(
-                onPress: isLoading.value ? null : submitPresence,
-                child: isLoading.value
-                    ? const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: FProgress.circularIcon(),
-                            // child: CircularProgressIndicator(
-                            //   strokeWidth: 2,
-                            //   color: Colors.white,
-                            // ),
-                          ),
-                          SizedBox(width: 8),
-                          Text('Recording...'),
-                        ],
-                      )
-                    : const Text('Record Attendance'),
-              ),
-            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

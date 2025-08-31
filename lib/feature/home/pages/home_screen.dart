@@ -187,7 +187,7 @@ class HomeScreen extends StatelessWidget {
                       child: BoxPresenceWidget(
                         typography: typography,
                         status: 'Masuk',
-                        color: colors.primary,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -195,7 +195,7 @@ class HomeScreen extends StatelessWidget {
                       child: BoxPresenceWidget(
                         typography: typography,
                         status: 'Pulang',
-                        color: Colors.orangeAccent,
+                        color: const Color(0xFFFF9800),
                       ),
                     ),
                   ],
