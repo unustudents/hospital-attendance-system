@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:forui/theme.dart';
 
-import '../../../routes/app_router.dart' show PresenceRoute;
-
 class MenuWidget extends StatelessWidget {
   const MenuWidget({
     super.key,
     required this.icon,
     this.color,
     required this.label,
+    this.onTap,
   });
   final IconData icon;
   final Color? color;
   final String label;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => const PresenceRoute().push(context),
+      onTap: onTap,
       child: Column(
         spacing: 10,
         children: [
