@@ -10,3 +10,5 @@ An example application built with dart_frog
 [dart_frog_lint_link]: https://pub.dev/packages/dart_frog_lint
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
+
+DB_HOST=127.0.0.1 DB_USER=sik DB_PASS=sik DB_NAME=sik dart_frog dev
