@@ -1,5 +1,6 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:hospital_attendance_system/services/pegawai_service.dart';
+import 'package:hospital_attendance_system/services/presensi_service.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   // Mendapatkan query parameter 'user'
@@ -32,6 +33,7 @@ Future<Response> onRequest(RequestContext context) async {
   try {
     // Mengambil data pegawai (nama dan departemen) dari database
     final dataPegawai = await PegawaiService.getPegawaiDataById(userId);
+    final dataPresensi = await PresensiService.getAvailableShifts().toString();
 
     if (dataPegawai == null) {
       return Response.json(
@@ -48,6 +50,7 @@ Future<Response> onRequest(RequestContext context) async {
       body: {
         'success': true,
         'message': 'Data pegawai berhasil',
+        'data_lain': dataPresensi,
         'data': {
           'user_id': userId,
           'nama_pegawai': dataPegawai['nama'],
