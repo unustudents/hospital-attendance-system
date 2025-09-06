@@ -72,9 +72,10 @@ class PegawaiService {
     try {
       final pool = await DbPool.ensureReady();
 
-      final result = await pool.execute(
+      // Cek presensi di tabel temporary_presensi (sedang berlangsung)
+      final tempResult = await pool.execute(
         '''
-        SELECT jam_datang, shift, status
+        SELECT jam_datang, jam_pulang, shift, status
         FROM temporary_presensi
         WHERE id = :id
           AND (
@@ -85,12 +86,41 @@ class PegawaiService {
         {'id': pegawaiId},
       );
 
-      if (result.rows.isNotEmpty) {
-        final row = result.rows.first;
+      if (tempResult.rows.isNotEmpty) {
+        final row = tempResult.rows.first;
         return {
           'jam_datang': row.colByName('jam_datang')?.toString(),
+          'jam_pulang': row.colByName('jam_pulang')?.toString(),
           'shift': row.colByName('shift')?.toString(),
           'status': row.colByName('status')?.toString(),
+          'source': 'temporary',
+        };
+      }
+
+      // Jika tidak ada di temporary, cek presensi hari ini di tabel rekap_presensi
+      final rekapResult = await pool.execute(
+        '''
+        SELECT jam_datang, jam_pulang, shift, status
+        FROM rekap_presensi
+        WHERE id = :id
+          AND (
+            (shift LIKE '%Malam%' AND DATE(jam_datang) = CURDATE() - 1) OR
+            (shift NOT LIKE '%Malam%' AND DATE(jam_datang) = CURDATE())
+          )
+        ORDER BY jam_datang DESC
+        LIMIT 1
+        ''',
+        {'id': pegawaiId},
+      );
+
+      if (rekapResult.rows.isNotEmpty) {
+        final row = rekapResult.rows.first;
+        return {
+          'jam_datang': row.colByName('jam_datang')?.toString(),
+          'jam_pulang': row.colByName('jam_pulang')?.toString(),
+          'shift': row.colByName('shift')?.toString(),
+          'status': row.colByName('status')?.toString(),
+          'source': 'rekap',
         };
       }
 
@@ -115,15 +145,28 @@ class PegawaiService {
           ? await getShiftsByDepartemen(departemen)
           : <Map<String, dynamic>>[];
 
-      // 3. Ambil data presensi aktif
+      // 3. Ambil data presensi aktif (dari temporary atau rekap hari ini)
       final presensiAktif = await getPresensiAktif(id);
 
-      // 4. Combine semua data
+      // 4. Tentukan status sudah absensi berdasarkan source dan jam_pulang
+      bool sudahAbsensi = false;
+      if (presensiAktif != null) {
+        final source = presensiAktif['source'] as String?;
+        final jamPulang = presensiAktif['jam_pulang'] as String?;
+
+        // Sudah absensi jika:
+        // - Ada data di rekap (sudah selesai presensi)
+        // - Atau ada di temporary dengan jam_pulang terisi (sudah pulang)
+        sudahAbsensi =
+            source == 'rekap' || (source == 'temporary' && jamPulang != null);
+      }
+
+      // 5. Combine semua data
       return {
         'nama': pegawaiBasic['nama'],
         'departemen': pegawaiBasic['departemen'],
         'shifts': shifts,
-        'sudah_absensi': presensiAktif != null,
+        'sudah_absensi': sudahAbsensi,
         'presensi_aktif': presensiAktif,
       };
     } catch (e) {

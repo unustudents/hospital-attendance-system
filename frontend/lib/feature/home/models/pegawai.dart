@@ -50,10 +50,50 @@ class ShiftKerja with _$ShiftKerja {
 class PresensiAktif with _$PresensiAktif {
   const factory PresensiAktif({
     @JsonKey(name: 'jam_datang') required String jamDatang,
+    @JsonKey(name: 'jam_pulang') required String jamPulang,
     required String shift,
     required String status,
+    String? source, // Field baru sesuai dengan response
   }) = _PresensiAktif;
 
   factory PresensiAktif.fromJson(Map<String, dynamic> json) =>
       _$PresensiAktifFromJson(json);
+}
+
+/// Extension untuk memformat waktu dari string datetime ke HH:mm
+extension PresensiAktifExtension on PresensiAktif {
+  /// Format jam datang menjadi HH:mm (contoh: "20:08")
+  String get jamDatangFormatted {
+    return _formatTimeString(jamDatang);
+  }
+
+  /// Format jam pulang menjadi HH:mm (contoh: "14:44")
+  /// Return "-" jika jam pulang kosong atau null
+  String get jamPulangFormatted {
+    if (jamPulang.isEmpty || jamPulang == 'null') return '-';
+    return _formatTimeString(jamPulang);
+  }
+
+  /// Helper function untuk memformat string datetime menjadi HH:mm
+  String _formatTimeString(String dateTimeString) {
+    try {
+      // Format: "2025-09-06 20:08:49" -> "20:08"
+      if (dateTimeString.contains(' ')) {
+        final timePart = dateTimeString.split(' ')[1]; // "20:08:49"
+        final timeComponents = timePart.split(':');
+        if (timeComponents.length >= 2) {
+          return '${timeComponents[0]}:${timeComponents[1]}'; // "20:08"
+        }
+      }
+
+      // Fallback: coba parse sebagai DateTime
+      final dateTime = DateTime.parse(dateTimeString);
+      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      // Jika parsing gagal, return string asli atau bagian waktu saja
+      return dateTimeString.length > 8
+          ? dateTimeString.substring(0, 8)
+          : dateTimeString;
+    }
+  }
 }

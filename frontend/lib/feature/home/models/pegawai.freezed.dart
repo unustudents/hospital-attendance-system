@@ -803,8 +803,11 @@ PresensiAktif _$PresensiAktifFromJson(Map<String, dynamic> json) {
 mixin _$PresensiAktif {
   @JsonKey(name: 'jam_datang')
   String get jamDatang => throw _privateConstructorUsedError;
+  @JsonKey(name: 'jam_pulang')
+  String get jamPulang => throw _privateConstructorUsedError;
   String get shift => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
+  String? get source => throw _privateConstructorUsedError;
 
   /// Serializes this PresensiAktif to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -825,8 +828,10 @@ abstract class $PresensiAktifCopyWith<$Res> {
   @useResult
   $Res call({
     @JsonKey(name: 'jam_datang') String jamDatang,
+    @JsonKey(name: 'jam_pulang') String jamPulang,
     String shift,
     String status,
+    String? source,
   });
 }
 
@@ -846,14 +851,20 @@ class _$PresensiAktifCopyWithImpl<$Res, $Val extends PresensiAktif>
   @override
   $Res call({
     Object? jamDatang = null,
+    Object? jamPulang = null,
     Object? shift = null,
     Object? status = null,
+    Object? source = freezed,
   }) {
     return _then(
       _value.copyWith(
             jamDatang: null == jamDatang
                 ? _value.jamDatang
                 : jamDatang // ignore: cast_nullable_to_non_nullable
+                      as String,
+            jamPulang: null == jamPulang
+                ? _value.jamPulang
+                : jamPulang // ignore: cast_nullable_to_non_nullable
                       as String,
             shift: null == shift
                 ? _value.shift
@@ -863,6 +874,10 @@ class _$PresensiAktifCopyWithImpl<$Res, $Val extends PresensiAktif>
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
                       as String,
+            source: freezed == source
+                ? _value.source
+                : source // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -880,8 +895,10 @@ abstract class _$$PresensiAktifImplCopyWith<$Res>
   @useResult
   $Res call({
     @JsonKey(name: 'jam_datang') String jamDatang,
+    @JsonKey(name: 'jam_pulang') String jamPulang,
     String shift,
     String status,
+    String? source,
   });
 }
 
@@ -900,14 +917,20 @@ class __$$PresensiAktifImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? jamDatang = null,
+    Object? jamPulang = null,
     Object? shift = null,
     Object? status = null,
+    Object? source = freezed,
   }) {
     return _then(
       _$PresensiAktifImpl(
         jamDatang: null == jamDatang
             ? _value.jamDatang
             : jamDatang // ignore: cast_nullable_to_non_nullable
+                  as String,
+        jamPulang: null == jamPulang
+            ? _value.jamPulang
+            : jamPulang // ignore: cast_nullable_to_non_nullable
                   as String,
         shift: null == shift
             ? _value.shift
@@ -917,6 +940,10 @@ class __$$PresensiAktifImplCopyWithImpl<$Res>
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
                   as String,
+        source: freezed == source
+            ? _value.source
+            : source // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -927,8 +954,10 @@ class __$$PresensiAktifImplCopyWithImpl<$Res>
 class _$PresensiAktifImpl implements _PresensiAktif {
   const _$PresensiAktifImpl({
     @JsonKey(name: 'jam_datang') required this.jamDatang,
+    @JsonKey(name: 'jam_pulang') required this.jamPulang,
     required this.shift,
     required this.status,
+    this.source,
   });
 
   factory _$PresensiAktifImpl.fromJson(Map<String, dynamic> json) =>
@@ -938,13 +967,18 @@ class _$PresensiAktifImpl implements _PresensiAktif {
   @JsonKey(name: 'jam_datang')
   final String jamDatang;
   @override
+  @JsonKey(name: 'jam_pulang')
+  final String jamPulang;
+  @override
   final String shift;
   @override
   final String status;
+  @override
+  final String? source;
 
   @override
   String toString() {
-    return 'PresensiAktif(jamDatang: $jamDatang, shift: $shift, status: $status)';
+    return 'PresensiAktif(jamDatang: $jamDatang, jamPulang: $jamPulang, shift: $shift, status: $status, source: $source)';
   }
 
   @override
@@ -954,13 +988,17 @@ class _$PresensiAktifImpl implements _PresensiAktif {
             other is _$PresensiAktifImpl &&
             (identical(other.jamDatang, jamDatang) ||
                 other.jamDatang == jamDatang) &&
+            (identical(other.jamPulang, jamPulang) ||
+                other.jamPulang == jamPulang) &&
             (identical(other.shift, shift) || other.shift == shift) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.source, source) || other.source == source));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, jamDatang, shift, status);
+  int get hashCode =>
+      Object.hash(runtimeType, jamDatang, jamPulang, shift, status, source);
 
   /// Create a copy of PresensiAktif
   /// with the given fields replaced by the non-null parameter values.
@@ -979,8 +1017,10 @@ class _$PresensiAktifImpl implements _PresensiAktif {
 abstract class _PresensiAktif implements PresensiAktif {
   const factory _PresensiAktif({
     @JsonKey(name: 'jam_datang') required final String jamDatang,
+    @JsonKey(name: 'jam_pulang') required final String jamPulang,
     required final String shift,
     required final String status,
+    final String? source,
   }) = _$PresensiAktifImpl;
 
   factory _PresensiAktif.fromJson(Map<String, dynamic> json) =
@@ -990,9 +1030,14 @@ abstract class _PresensiAktif implements PresensiAktif {
   @JsonKey(name: 'jam_datang')
   String get jamDatang;
   @override
+  @JsonKey(name: 'jam_pulang')
+  String get jamPulang;
+  @override
   String get shift;
   @override
   String get status;
+  @override
+  String? get source;
 
   /// Create a copy of PresensiAktif
   /// with the given fields replaced by the non-null parameter values.
