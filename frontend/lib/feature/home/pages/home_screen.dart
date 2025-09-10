@@ -20,14 +20,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final FTypography typography = context.theme.typography;
     final FColors colors = context.theme.colors;
-    final FScaffoldStyle myStyle =
-        FScaffoldStyle.inherit(
-          colors: context.theme.colors,
-          style: context.theme.style,
-        ).copyWith(
-          // Make scaffold background transparent so parent gradient shows.
-          backgroundColor: Colors.transparent,
-        );
+    final FScaffoldStyle myStyle = FScaffoldStyle.inherit(colors: context.theme.colors, style: context.theme.style).copyWith(
+      // Make scaffold background transparent so parent gradient shows.
+      backgroundColor: Colors.transparent,
+    );
 
     return BlocProvider(
       create: (context) => HomeCubit(),
@@ -40,18 +36,8 @@ class HomeScreen extends StatelessWidget {
               return LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  colors.primary,
-                  colors.primary,
-                  Colors.grey.shade300,
-                  Colors.grey.shade300,
-                ],
-                stops: const [
-                  0.0,
-                  topFraction,
-                  topFraction,
-                  1.0,
-                ], // Hard split at 20%
+                colors: [colors.primary, colors.primary, Colors.grey.shade300, Colors.grey.shade300],
+                stops: const [0.0, topFraction, topFraction, 1.0], // Hard split at 20%
               );
             }(),
           ),
@@ -76,11 +62,7 @@ class HomeScreen extends StatelessWidget {
                         Center(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20),
-                            child: Assets.images.logo.image(
-                              width: 72,
-                              height: 72,
-                              fit: BoxFit.cover,
-                            ),
+                            child: Assets.images.logo.image(width: 72, height: 72, fit: BoxFit.cover),
                           ),
                         ),
                         // Greeting and Menu (glass + shadow)
@@ -92,10 +74,7 @@ class HomeScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
                                 color: Colors.white.withValues(alpha: 0.10),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.28),
-                                  width: 1,
-                                ),
+                                border: Border.all(color: Colors.white.withValues(alpha: 0.28), width: 1),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withValues(alpha: 0.25),
@@ -113,55 +92,31 @@ class HomeScreen extends StatelessWidget {
                                       Expanded(
                                         flex: 3,
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           spacing: 8,
                                           children: [
                                             Text(
                                               "Selamat Siang",
-                                              style: typography.xs.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white,
-                                              ),
+                                              style: typography.xs.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
                                             ),
                                             BlocBuilder<HomeCubit, HomeState>(
                                               builder: (context, state) {
                                                 return state.when(
                                                   initial: () => Text(
                                                     "Memuat...",
-                                                    style: typography.base
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
+                                                    style: typography.base.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
                                                   ),
                                                   loading: () => Text(
                                                     "Memuat...",
-                                                    style: typography.base
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
+                                                    style: typography.base.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
                                                   ),
                                                   loaded: (pegawaiData) => Text(
                                                     pegawaiData.namaPegawai,
-                                                    style: typography.base
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
+                                                    style: typography.base.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
                                                   ),
                                                   error: (message) => Text(
-                                                    "Error $message",
-                                                    style: typography.base
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
+                                                    "Error",
+                                                    style: typography.base.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
                                                   ),
                                                 );
                                               },
@@ -171,107 +126,61 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       Expanded(
                                         flex: 2,
-                                        child:
-                                            BlocBuilder<HomeCubit, HomeState>(
-                                              builder: (context, state) {
-                                                return state.when(
-                                                  initial: () => shiftTime(
-                                                    typography,
-                                                    colors,
-                                                    shift: "Memuat...",
-                                                    jamMasuk: "Memuat...",
-                                                    jamPulang: "Memuat...",
-                                                  ),
-                                                  loading: () => shiftTime(
-                                                    typography,
-                                                    colors,
-                                                    shift: "Memuat...",
-                                                    jamMasuk: "Memuat...",
-                                                    jamPulang: "Memuat...",
-                                                  ),
-                                                  loaded: (pegawaiData) =>
-                                                      shiftTime(
-                                                        typography,
-                                                        colors,
-                                                        shift: pegawaiData
-                                                            .shifts
-                                                            .first
-                                                            .shift,
-                                                        jamMasuk: pegawaiData
-                                                            .shifts
-                                                            .first
-                                                            .jamMasuk
-                                                            .substring(0, 5),
-                                                        jamPulang: pegawaiData
-                                                            .shifts
-                                                            .first
-                                                            .jamPulang
-                                                            .substring(0, 5),
-                                                      ),
-                                                  error: (message) => shiftTime(
-                                                    typography,
-                                                    colors,
-                                                    shift: "Error",
-                                                    jamMasuk: "Error",
-                                                    jamPulang: "Error",
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                        child: BlocBuilder<HomeCubit, HomeState>(
+                                          builder: (context, state) {
+                                            return state.when(
+                                              initial: () =>
+                                                  shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
+                                              loading: () =>
+                                                  shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
+                                              loaded: (pegawaiData) => shiftTime(
+                                                typography,
+                                                colors,
+                                                shift: pegawaiData.shifts.first.shift,
+                                                jamMasuk: pegawaiData.shifts.first.jamMasuk.substring(0, 5),
+                                                jamPulang: pegawaiData.shifts.first.jamPulang.substring(0, 5),
+                                              ),
+                                              error: (message) =>
+                                                  shiftTime(typography, colors, shift: "Error", jamMasuk: "Error", jamPulang: "Error"),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ],
                                   ),
                                   const Divider(thickness: 2, height: 20),
                                   const SizedBox(height: 12),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       MenuWidget(
                                         icon: FIcons.camera,
                                         label: 'Presensi',
                                         color: Colors.pinkAccent,
-                                        onTap: () =>
-                                            const PresenceRoute().push(context),
+                                        onTap: () => const PresenceRoute().push(context),
                                       ),
                                       MenuWidget(
                                         icon: FIcons.fileBox,
                                         label: 'Izin',
                                         color: Colors.orangeAccent,
-                                        onTap: () => showWarningToast(
-                                          context: context,
-                                          title:
-                                              "Fitur sedang dalam pengembangan",
-                                        ),
+                                        onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
                                       ),
                                       MenuWidget(
                                         icon: FIcons.calendar,
                                         label: 'Cuti',
-                                        onTap: () => showWarningToast(
-                                          context: context,
-                                          title:
-                                              "Fitur sedang dalam pengembangan",
-                                        ),
+                                        onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
                                         color: Colors.green,
                                       ),
                                       MenuWidget(
                                         icon: FIcons.history,
                                         label: 'Riwayat',
-                                        onTap: () => showWarningToast(
-                                          context: context,
-                                          title:
-                                              "Fitur sedang dalam pengembangan",
-                                        ),
+                                        onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
                                         color: Colors.purple,
                                       ),
                                       MenuWidget(
                                         icon: FIcons.contact,
                                         label: 'Profil',
-                                        onTap: () => showWarningToast(
-                                          context: context,
-                                          title:
-                                              "Fitur sedang dalam pengembangan",
-                                        ),
+                                        onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
                                         color: Colors.deepOrangeAccent,
                                       ),
                                     ],
@@ -286,105 +195,53 @@ class HomeScreen extends StatelessWidget {
                         BlocBuilder<HomeCubit, HomeState>(
                           builder: (context, state) {
                             return state.when(
-                              initial: () => _buildBoardPresence(
-                                typography,
-                                timeMasuk: '',
-                                timePulang: '',
-                              ),
-                              loading: () => _buildBoardPresence(
-                                typography,
-                                timeMasuk: 'Memuat ...',
-                                timePulang: 'Memuat ...',
-                              ),
+                              initial: () => _buildBoardPresence(typography, timeMasuk: '', timePulang: ''),
+                              loading: () => _buildBoardPresence(typography, timeMasuk: 'Memuat ...', timePulang: 'Memuat ...'),
                               loaded: (pegawaiData) {
                                 final presensiAktif = pegawaiData.presensiAktif;
 
                                 return _buildBoardPresence(
                                   typography,
-                                  timeMasuk: TimeFormatter.formatToDisplayTime(
-                                    presensiAktif?.jamDatang,
-                                  ),
-                                  timePulang: TimeFormatter.formatToDisplayTime(
-                                    presensiAktif?.jamPulang,
-                                  ),
+                                  timeMasuk: TimeFormatter.formatToDisplayTime(presensiAktif?.jamDatang),
+                                  timePulang: TimeFormatter.formatToDisplayTime(presensiAktif?.jamPulang),
                                 );
                               },
-                              error: (message) => _buildBoardPresence(
-                                typography,
-                                timeMasuk: 'Error',
-                                timePulang: 'Error',
-                              ),
+                              error: (message) => _buildBoardPresence(typography, timeMasuk: 'Error', timePulang: 'Error'),
                             );
                             // return _buildBoardPresence(typography);
                           },
                         ),
 
                         // Presence Quick History
-                        Text(
-                          "Presensi Bulan Agustus 2025",
-                          style: typography.base.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text("Presensi Bulan Agustus 2025", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
                         // create this
                         GridView(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 20,
-                                crossAxisSpacing: 20,
-                                childAspectRatio: 2.2,
-                              ),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            childAspectRatio: 2.2,
+                          ),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           children: const [
-                            PresenceHistoryWidget(
-                              icon: FIcons.notebookTabs,
-                              color: Colors.deepPurpleAccent,
-                              status: 'Hadir',
-                              total: 0,
-                            ),
-                            PresenceHistoryWidget(
-                              icon: FIcons.users,
-                              color: Colors.green,
-                              status: 'Izin',
-                              total: 0,
-                            ),
-                            PresenceHistoryWidget(
-                              icon: FIcons.frown,
-                              color: Colors.blueGrey,
-                              status: 'Sakit',
-                              total: 0,
-                            ),
-                            PresenceHistoryWidget(
-                              icon: FIcons.alarmClock,
-                              color: Colors.pinkAccent,
-                              status: 'Cuti',
-                              total: 0,
-                            ),
+                            PresenceHistoryWidget(icon: FIcons.notebookTabs, color: Colors.deepPurpleAccent, status: 'Hadir', total: 0),
+                            PresenceHistoryWidget(icon: FIcons.users, color: Colors.green, status: 'Izin', total: 0),
+                            PresenceHistoryWidget(icon: FIcons.frown, color: Colors.blueGrey, status: 'Sakit', total: 0),
+                            PresenceHistoryWidget(icon: FIcons.alarmClock, color: Colors.pinkAccent, status: 'Cuti', total: 0),
                           ],
                         ),
 
                         // Presence a week ago
-                        Text(
-                          "1 Minggu Terakhir",
-                          style: typography.base.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text("1 Minggu Terakhir", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
 
                         // Header row
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           decoration: BoxDecoration(
                             color: colors.primary,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: colors.primary.withValues(alpha: 0.2),
-                            ),
+                            border: Border.all(color: colors.primary.withValues(alpha: 0.2)),
                           ),
                           child: Row(
                             children: [
@@ -392,20 +249,14 @@ class HomeScreen extends StatelessWidget {
                                 flex: 2,
                                 child: Text(
                                   "Tanggal",
-                                  style: typography.sm.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: colors.background,
-                                  ),
+                                  style: typography.sm.copyWith(fontWeight: FontWeight.bold, color: colors.background),
                                 ),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: Text(
                                   "Jam Masuk",
-                                  style: typography.sm.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: colors.background,
-                                  ),
+                                  style: typography.sm.copyWith(fontWeight: FontWeight.bold, color: colors.background),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -413,10 +264,7 @@ class HomeScreen extends StatelessWidget {
                                 flex: 2,
                                 child: Text(
                                   "Jam Pulang",
-                                  style: typography.sm.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: colors.background,
-                                  ),
+                                  style: typography.sm.copyWith(fontWeight: FontWeight.bold, color: colors.background),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -427,49 +275,29 @@ class HomeScreen extends StatelessWidget {
                         // Data rows
                         Column(
                           children: List.generate(7, (index) {
-                            final DateTime date = DateTime.now().subtract(
-                              Duration(days: index),
-                            );
-                            final String formattedDate =
-                                "${date.day}/${date.month}/${date.year}";
+                            final DateTime date = DateTime.now().subtract(Duration(days: index));
+                            final String formattedDate = "${date.day}/${date.month}/${date.year}";
 
                             return Container(
                               margin: const EdgeInsets.only(bottom: 8),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 16,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(color: Colors.grey.shade300),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.05),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 4, offset: const Offset(0, 2))],
                               ),
                               child: Row(
                                 children: [
                                   Expanded(
                                     flex: 2,
-                                    child: Text(
-                                      formattedDate,
-                                      style: typography.sm.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                                    child: Text(formattedDate, style: typography.sm.copyWith(fontWeight: FontWeight.w500)),
                                   ),
                                   Expanded(
                                     flex: 2,
                                     child: Text(
                                       "08:00 WIB",
-                                      style: typography.sm.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: colors.primary,
-                                      ),
+                                      style: typography.sm.copyWith(fontWeight: FontWeight.w500, color: colors.primary),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -477,10 +305,7 @@ class HomeScreen extends StatelessWidget {
                                     flex: 2,
                                     child: Text(
                                       "17:00 WIB",
-                                      style: typography.sm.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: colors.destructive,
-                                      ),
+                                      style: typography.sm.copyWith(fontWeight: FontWeight.w500, color: colors.destructive),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -501,59 +326,33 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Row _buildBoardPresence(
-    FTypography typography, {
-    String? timeMasuk,
-    String? timePulang,
-  }) {
+  Row _buildBoardPresence(FTypography typography, {String? timeMasuk, String? timePulang}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: BoxPresenceWidget(
-            typography: typography,
-            status: 'Masuk',
-            color: Colors.white,
-            presenceTime: timeMasuk,
-          ),
+          child: BoxPresenceWidget(typography: typography, status: 'Masuk', color: Colors.white, presenceTime: timeMasuk),
         ),
         const SizedBox(width: 20),
         Expanded(
-          child: BoxPresenceWidget(
-            typography: typography,
-            status: 'Pulang',
-            color: const Color(0xFFFF9800),
-            presenceTime: timePulang,
-          ),
+          child: BoxPresenceWidget(typography: typography, status: 'Pulang', color: const Color(0xFFFF9800), presenceTime: timePulang),
         ),
       ],
     );
   }
 
-  Column shiftTime(
-    FTypography typography,
-    FColors colors, {
-    required String shift,
-    required String jamMasuk,
-    required String jamPulang,
-  }) {
+  Column shiftTime(FTypography typography, FColors colors, {required String shift, required String jamMasuk, required String jamPulang}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
         Text(
           shift,
-          style: typography.sm.copyWith(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          style: typography.sm.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
         ),
         Text(
           "$jamMasuk WIB - $jamPulang WIB",
-          style: typography.sm.copyWith(
-            fontWeight: FontWeight.w600,
-            color: colors.background,
-          ),
+          style: typography.sm.copyWith(fontWeight: FontWeight.w600, color: colors.background),
         ),
       ],
     );
