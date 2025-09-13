@@ -802,9 +802,9 @@ PresensiAktif _$PresensiAktifFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PresensiAktif {
   @JsonKey(name: 'jam_datang')
-  String get jamDatang => throw _privateConstructorUsedError;
+  String? get jamDatang => throw _privateConstructorUsedError;
   @JsonKey(name: 'jam_pulang')
-  String get jamPulang => throw _privateConstructorUsedError;
+  String? get jamPulang => throw _privateConstructorUsedError;
   String get shift => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   String? get source => throw _privateConstructorUsedError;
@@ -827,8 +827,8 @@ abstract class $PresensiAktifCopyWith<$Res> {
   ) = _$PresensiAktifCopyWithImpl<$Res, PresensiAktif>;
   @useResult
   $Res call({
-    @JsonKey(name: 'jam_datang') String jamDatang,
-    @JsonKey(name: 'jam_pulang') String jamPulang,
+    @JsonKey(name: 'jam_datang') String? jamDatang,
+    @JsonKey(name: 'jam_pulang') String? jamPulang,
     String shift,
     String status,
     String? source,
@@ -850,22 +850,22 @@ class _$PresensiAktifCopyWithImpl<$Res, $Val extends PresensiAktif>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? jamDatang = null,
-    Object? jamPulang = null,
+    Object? jamDatang = freezed,
+    Object? jamPulang = freezed,
     Object? shift = null,
     Object? status = null,
     Object? source = freezed,
   }) {
     return _then(
       _value.copyWith(
-            jamDatang: null == jamDatang
+            jamDatang: freezed == jamDatang
                 ? _value.jamDatang
                 : jamDatang // ignore: cast_nullable_to_non_nullable
-                      as String,
-            jamPulang: null == jamPulang
+                      as String?,
+            jamPulang: freezed == jamPulang
                 ? _value.jamPulang
                 : jamPulang // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
             shift: null == shift
                 ? _value.shift
                 : shift // ignore: cast_nullable_to_non_nullable
@@ -894,8 +894,8 @@ abstract class _$$PresensiAktifImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: 'jam_datang') String jamDatang,
-    @JsonKey(name: 'jam_pulang') String jamPulang,
+    @JsonKey(name: 'jam_datang') String? jamDatang,
+    @JsonKey(name: 'jam_pulang') String? jamPulang,
     String shift,
     String status,
     String? source,
@@ -916,22 +916,22 @@ class __$$PresensiAktifImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? jamDatang = null,
-    Object? jamPulang = null,
+    Object? jamDatang = freezed,
+    Object? jamPulang = freezed,
     Object? shift = null,
     Object? status = null,
     Object? source = freezed,
   }) {
     return _then(
       _$PresensiAktifImpl(
-        jamDatang: null == jamDatang
+        jamDatang: freezed == jamDatang
             ? _value.jamDatang
             : jamDatang // ignore: cast_nullable_to_non_nullable
-                  as String,
-        jamPulang: null == jamPulang
+                  as String?,
+        jamPulang: freezed == jamPulang
             ? _value.jamPulang
             : jamPulang // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
         shift: null == shift
             ? _value.shift
             : shift // ignore: cast_nullable_to_non_nullable
@@ -953,8 +953,8 @@ class __$$PresensiAktifImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PresensiAktifImpl implements _PresensiAktif {
   const _$PresensiAktifImpl({
-    @JsonKey(name: 'jam_datang') required this.jamDatang,
-    @JsonKey(name: 'jam_pulang') required this.jamPulang,
+    @JsonKey(name: 'jam_datang') this.jamDatang,
+    @JsonKey(name: 'jam_pulang') this.jamPulang,
     required this.shift,
     required this.status,
     this.source,
@@ -965,10 +965,10 @@ class _$PresensiAktifImpl implements _PresensiAktif {
 
   @override
   @JsonKey(name: 'jam_datang')
-  final String jamDatang;
+  final String? jamDatang;
   @override
   @JsonKey(name: 'jam_pulang')
-  final String jamPulang;
+  final String? jamPulang;
   @override
   final String shift;
   @override
@@ -1016,8 +1016,8 @@ class _$PresensiAktifImpl implements _PresensiAktif {
 
 abstract class _PresensiAktif implements PresensiAktif {
   const factory _PresensiAktif({
-    @JsonKey(name: 'jam_datang') required final String jamDatang,
-    @JsonKey(name: 'jam_pulang') required final String jamPulang,
+    @JsonKey(name: 'jam_datang') final String? jamDatang,
+    @JsonKey(name: 'jam_pulang') final String? jamPulang,
     required final String shift,
     required final String status,
     final String? source,
@@ -1028,10 +1028,10 @@ abstract class _PresensiAktif implements PresensiAktif {
 
   @override
   @JsonKey(name: 'jam_datang')
-  String get jamDatang;
+  String? get jamDatang;
   @override
   @JsonKey(name: 'jam_pulang')
-  String get jamPulang;
+  String? get jamPulang;
   @override
   String get shift;
   @override

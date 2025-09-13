@@ -68,8 +68,8 @@ Map<String, dynamic> _$$ShiftKerjaImplToJson(_$ShiftKerjaImpl instance) =>
 
 _$PresensiAktifImpl _$$PresensiAktifImplFromJson(Map<String, dynamic> json) =>
     _$PresensiAktifImpl(
-      jamDatang: json['jam_datang'] as String,
-      jamPulang: json['jam_pulang'] as String,
+      jamDatang: json['jam_datang'] as String?,
+      jamPulang: json['jam_pulang'] as String?,
       shift: json['shift'] as String,
       status: json['status'] as String,
       source: json['source'] as String?,
