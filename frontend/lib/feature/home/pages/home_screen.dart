@@ -51,133 +51,105 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       // Greeting and Menu (glass + shadow)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.white.withValues(alpha: 0.28), width: 1),
-                            boxShadow: [
-                              BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 24, spreadRadius: -4, offset: const Offset(0, 8)),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      spacing: 8,
-                                      children: [
-                                        Text("Selamat Siang", style: typography.xs.copyWith(fontWeight: FontWeight.w600)),
-                                        BlocBuilder<HomeCubit, HomeState>(
-                                          builder: (context, state) {
-                                            return state.when(
-                                              initial: () => Text("Memuat...", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
-                                              loading: () => Text("Memuat...", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
-                                              loaded: (pegawaiData) =>
-                                                  Text(pegawaiData.namaPegawai, style: typography.base.copyWith(fontWeight: FontWeight.w600)),
-                                              error: (message) => Text("Error", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 20, spreadRadius: -4, offset: const Offset(0, 6)),
+                            BoxShadow(color: Colors.white.withValues(alpha: 0.20), blurRadius: 6, spreadRadius: 0, offset: const Offset(0, 0)),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    spacing: 8,
+                                    children: [
+                                      Text("Selamat Siang", style: typography.xs.copyWith(fontWeight: FontWeight.w600)),
+                                      BlocBuilder<HomeCubit, HomeState>(
+                                        builder: (context, state) {
+                                          return state.when(
+                                            initial: () => Text("Memuat...", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
+                                            loading: () => Text("Memuat...", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
+                                            loaded: (pegawaiData) =>
+                                                Text(pegawaiData.namaPegawai, style: typography.base.copyWith(fontWeight: FontWeight.w600)),
+                                            error: (message) => Text("Error", style: typography.base.copyWith(fontWeight: FontWeight.w600)),
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: BlocBuilder<HomeCubit, HomeState>(
-                                      builder: (context, state) {
-                                        // return state.whenOrNull(
-                                        //       initial: () =>
-                                        //           shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
-                                        //       loading: () =>
-                                        //           shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
-                                        //       loaded: (pegawaiData) {
-                                        //         var shift = pegawaiData.shifts;
-                                        //         if (shift.isEmpty) {
-                                        //           return shiftTime(typography, colors, shift: "Tidak ada shift", jamMasuk: "-", jamPulang: "-");
-                                        //         } else {
-                                        //           return shiftTime(
-                                        //             typography,
-                                        //             colors,
-                                        //             shift: shift.first.shift,
-                                        //             jamMasuk: shift.first.jamMasuk.substring(0, 5),
-                                        //             jamPulang: shift.first.jamPulang.substring(0, 5),
-                                        //           );
-                                        //         }
-                                        //       },
-                                        //       error: (message) =>
-                                        //           shiftTime(typography, colors, shift: "Error", jamMasuk: "Error", jamPulang: "Error"),
-                                        //     ) ??
-                                        //     shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat...");
-                                        return state.when(
-                                          initial: () =>
-                                              shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
-                                          loading: () =>
-                                              shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
-                                          loaded: (pegawaiData) {
-                                            var shift = pegawaiData.shifts;
-                                            print(shift.first.jamMasuk);
-                                            print(shift.first.jamPulang);
-                                            return shiftTime(
-                                              typography,
-                                              colors,
-                                              shift: shift.first.shift,
-                                              jamMasuk: shift.first.jamMasuk.isNotEmpty ? shift.first.jamMasuk.substring(0, 5) : "",
-                                              jamPulang: shift.first.jamPulang.isNotEmpty ? shift.first.jamPulang.substring(0, 5) : "",
-                                            );
-                                          },
-                                          error: (message) => shiftTime(typography, colors, shift: "Error", jamMasuk: "Error", jamPulang: "Error"),
-                                        );
-                                      },
-                                    ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: BlocBuilder<HomeCubit, HomeState>(
+                                    builder: (context, state) {
+                                      return state.when(
+                                        initial: () =>
+                                            shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
+                                        loading: () =>
+                                            shiftTime(typography, colors, shift: "Memuat...", jamMasuk: "Memuat...", jamPulang: "Memuat..."),
+                                        loaded: (pegawaiData) {
+                                          var shift = pegawaiData.shifts;
+                                          return shiftTime(
+                                            typography,
+                                            colors,
+                                            shift: shift.first.shift,
+                                            jamMasuk: shift.first.jamMasuk.isNotEmpty ? shift.first.jamMasuk.substring(0, 5) : "",
+                                            jamPulang: shift.first.jamPulang.isNotEmpty ? shift.first.jamPulang.substring(0, 5) : "",
+                                          );
+                                        },
+                                        error: (message) => shiftTime(typography, colors, shift: "Error", jamMasuk: "Error", jamPulang: "Error"),
+                                      );
+                                    },
                                   ),
-                                ],
-                              ),
-                              const Divider(thickness: 2, height: 20),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  MenuWidget(
-                                    icon: FIcons.camera,
-                                    label: 'Presensi',
-                                    color: Colors.pinkAccent,
-                                    onTap: () => const PresenceRoute().push(context),
-                                  ),
-                                  MenuWidget(
-                                    icon: FIcons.fileBox,
-                                    label: 'Izin',
-                                    color: Colors.orangeAccent,
-                                    onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
-                                  ),
-                                  MenuWidget(
-                                    icon: FIcons.calendar,
-                                    label: 'Cuti',
-                                    onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
-                                    color: Colors.green,
-                                  ),
-                                  MenuWidget(
-                                    icon: FIcons.history,
-                                    label: 'Riwayat',
-                                    onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
-                                    color: Colors.purple,
-                                  ),
-                                  MenuWidget(
-                                    icon: FIcons.contact,
-                                    label: 'Profil',
-                                    onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
-                                    color: Colors.deepOrangeAccent,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                              ],
+                            ),
+                            const Divider(thickness: 2, height: 20),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MenuWidget(
+                                  icon: FIcons.camera,
+                                  label: 'Presensi',
+                                  color: Colors.pinkAccent,
+                                  onTap: () => const PresenceRoute().push(context),
+                                ),
+                                MenuWidget(
+                                  icon: FIcons.fileBox,
+                                  label: 'Izin',
+                                  color: Colors.orangeAccent,
+                                  onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
+                                ),
+                                MenuWidget(
+                                  icon: FIcons.calendar,
+                                  label: 'Cuti',
+                                  onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
+                                  color: Colors.green,
+                                ),
+                                MenuWidget(
+                                  icon: FIcons.history,
+                                  label: 'Riwayat',
+                                  onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
+                                  color: Colors.purple,
+                                ),
+                                MenuWidget(
+                                  icon: FIcons.contact,
+                                  label: 'Profil',
+                                  onTap: () => showWarningToast(context: context, title: "Fitur sedang dalam pengembangan"),
+                                  color: Colors.deepOrangeAccent,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
 
