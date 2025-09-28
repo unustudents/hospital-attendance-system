@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../models/pegawai.dart';
-import '../data/home_data_online.dart';
+import '../data/home_online_data_source.dart';
 
 part 'home_state.dart';
 part 'home_cubit.freezed.dart';
@@ -17,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       emit(const HomeState.loading());
 
-      final pegawaiResponse = await HomeDataOnline.getPegawaiData(userId);
+      final pegawaiResponse = await HomeDataOnline.getAttendanceData(userId);
 
       if (pegawaiResponse.success) {
         emit(HomeState.loaded(pegawaiResponse.data));
