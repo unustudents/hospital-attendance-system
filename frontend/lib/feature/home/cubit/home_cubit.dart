@@ -22,9 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
       if (pegawaiResponse.success) {
         emit(HomeState.loaded(pegawaiResponse.data));
       } else {
-        emit(
-          HomeState.error('Gagal mengambil data: ${pegawaiResponse.message}'),
-        );
+        emit(HomeState.error('Gagal mengambil data: ${pegawaiResponse.message}'));
       }
     } catch (e) {
       emit(HomeState.error(e.toString().replaceFirst('Exception: ', '')));

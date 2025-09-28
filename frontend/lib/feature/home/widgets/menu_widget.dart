@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/theme.dart';
 
 class MenuWidget extends StatelessWidget {
-  const MenuWidget({
-    super.key,
-    required this.icon,
-    this.color,
-    required this.label,
-    this.onTap,
-  });
+  const MenuWidget({super.key, required this.icon, this.color, required this.label, this.onTap});
   final IconData icon;
   final Color? color;
   final String label;
@@ -30,16 +24,11 @@ class MenuWidget extends StatelessWidget {
                 color: color != null
                     ? Colors
                           .white // Gunakan warna kontras jika ada background color
-                    : Colors
-                          .grey
-                          .shade700, // Gunakan warna default jika tidak ada background color
+                    : Colors.grey.shade700, // Gunakan warna default jika tidak ada background color
               ),
             ),
           ),
-          Text(
-            label,
-            style: context.theme.typography.xs.copyWith(color: Colors.white),
-          ),
+          Text(label, style: context.theme.typography.xs),
         ],
       ),
     );
