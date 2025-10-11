@@ -24,8 +24,7 @@ class PresenceRoute extends GoRouteData with _$PresenceRoute {
   const PresenceRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const PresenceScreen();
+  Widget build(BuildContext context, GoRouterState state) => const PresenceScreen();
 }
 
 GoRouter get appRouter => GoRouter(initialLocation: '/', routes: $appRoutes);

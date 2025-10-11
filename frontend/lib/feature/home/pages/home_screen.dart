@@ -26,9 +26,9 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeCubit(),
       child: SafeArea(
-        child: FScaffold(
-          scaffoldStyle: (_) => myStyle,
-          child: FToaster(
+        child: Scaffold(
+          // scaffoldStyle: (_) => myStyle,
+          body: FToaster(
             child: Builder(
               builder: (context) => RefreshIndicator(
                 onRefresh: () async {
@@ -281,6 +281,13 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          floatingActionButton: IconButton.filled(
+            onPressed: () {},
+            icon: const Text('M'),
+            color: colors.primary,
+            iconSize: 30,
+            focusColor: Colors.red,
           ),
         ),
       ),

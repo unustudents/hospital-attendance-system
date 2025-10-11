@@ -13,7 +13,6 @@ dependencies:
 
   # State management / utilities - Working versions
   flutter_bloc: ^8.1.6
-  get_it: ^7.7.0
   bloc: ^8.1.4
 
   # Freezed (runtime annotation) - Working versions
@@ -23,7 +22,7 @@ dependencies:
   json_annotation: ^4.9.0
 
   # Injectable - runtime - Working version
-  injectable: ^2.4.4
+  get_it: ^8.2.0
   
   # UI Framework - Latest
   forui: ^0.15.1
@@ -44,6 +43,8 @@ dependencies:
   
   # HTTP Client
   http: ^1.1.0
+  hive_ce: ^2.14.0
+  hive_ce_flutter: ^2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +54,6 @@ dev_dependencies:
   # Code generators / build - Working versions
   build_runner: ^2.4.9
   freezed: ^2.5.2
-  injectable_generator: ^2.4.2
   json_serializable: ^6.8.0
   go_router_builder: ^3.0.0
   flutter_gen_runner: ^5.11.0
